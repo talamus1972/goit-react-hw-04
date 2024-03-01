@@ -1,44 +1,41 @@
 import css from "./SearchBar.module.css";
 import { Formik, Form, Field } from "formik";
-// import * as Yup from "yup";
-import { ErrorMessage } from "formik";
+import toast, { Toaster } from 'react-hot-toast';
 
-// const FeedbackSchema = Yup.object().shape({
-//   name: Yup.string()
-//     .min(3, "Too Short!")
-//     .max(50, "Too Long!")
-//     .required("Required"),
-// });
 
-const initialValues = {
-  type: "",
-};
 
-export default function SearchBar() {
+export default function SearchBar({ onSearch }) {
+   const notifyEmptyQuery = () => toast.error('Please enter a search query.');
   return (
+    <header className={css.form}>
+        <Toaster />
+
     <Formik
-      initialValues={initialValues}
-      onSubmit={(values, actions) => {
-        console.log(values);
-        actions.resetForm();
-      }}
+      initialValues={{query: ""}}
+        onSubmit={(values, actions) => {
+          if (values.query.trim() === "") {
+            notifyEmptyQuery();
+          } else {
+            onSearch(values.query);
+          }
+          actions.resetForm();
+        }}        
     >
-      <header className={css.form}>
-        <Form />
+        <Form>
         <Field
           type="text"
-          name="name"
+          name="query"
           className={css.input}
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
         />
-        {/* validationSchema={FeedbackSchema} */}
-        <ErrorMessage className={css.error} name="name" component="span" />
         <button className={css.btn} type="submit">
           Search
         </button>
+      </Form>
+      </Formik>
       </header>
-    </Formik>
+      
   );
 }
