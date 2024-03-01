@@ -19,6 +19,7 @@ export default function SearchBar() {
     <Formik
       initialValues={initialValues}
       onSubmit={(values, actions) => {
+        console.log(values);
         actions.resetForm();
       }}
     >
@@ -26,9 +27,10 @@ export default function SearchBar() {
         <Form />
         <Field
           type="text"
+          name="name"
           className={css.input}
-          autocomplete="off"
-          autofocus
+          autoComplete="off"
+          autoFocus
           placeholder="Search images and photos"
         />
         {/* validationSchema={FeedbackSchema} */}
