@@ -1,10 +1,10 @@
 import css from "./ErrorMessage.module.css"
 
-export default function ErrorMessage({ message }) {
+export default function ErrorMessage() {
     
     return (
 <div>
-    <p className={css.error }>{message}</p>
+    <p className={css.error }>OOps! Error! Reload! </p>
 </div>
     )
 }

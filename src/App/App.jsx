@@ -15,7 +15,10 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   
- 
+  // 572515
+  // Authorization: Client-ID YOUR_ACCESS_KEY
+  //  gZuYWweutzjOLPBSOxTd_JFkbovfFGxduFYh-JTDS9w
+  // https://api.unsplash.com/photos/?client_id=YOUR_ACCESS_KEY
 
 axios.defaults.baseURL="http://hn.algolia.com/api/v1"
 
@@ -62,9 +65,9 @@ axios.defaults.baseURL="http://hn.algolia.com/api/v1"
     <div>
       <SearchBar onSearch={handleSearch} />
       {isLoading && <Loader loading={isLoading} />}
-      {error && <ErrorMessage message="OOps! Error! Reload" />}
+      {error && <ErrorMessage />}
       {articles.length > 0 && <ImageGallery items={articles} />}
-      {articles.length > 0 && <LoadMoreBtn onClick={handleLoadMore} />}
+      {articles.length > 0 && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
     </div>
   );
 }
