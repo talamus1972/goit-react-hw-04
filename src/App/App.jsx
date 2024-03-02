@@ -3,60 +3,68 @@ import { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import ImageGallery from "../ImageGallery/ImageGallery.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
-import { Audio } from 'react-loader-spinner'
+import Loader from "../Loader/Loader.jsx";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn.jsx";
 
 
 
 export default function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   
-  <Audio
-  height="40"
-  width="40"
-  radius="9"
-  color="green"
-  ariaLabel="three-dots-loading"
-  wrapperStyle
-  wrapperClass
-/>
+ 
 
 axios.defaults.baseURL="http://hn.algolia.com/api/v1"
 
-  const getArticles = async (newQuery) => {
-    try {
-      setLoading(true);
-      setArticles([])
+  useEffect(() => {
+    if (searchQuery === "") {
+      return
+    }
+    async function getData() {
+      try {
+      setIsLoading(true);
+      setError(false)
       const response = await axios.get("/search", {
         params: {
-          query: newQuery,
+          query: searchQuery,
+          hitsPerPage: 10,
+          page
         }
       });
-      setArticles(response.data.hits);
+        const data= response.data.hits
+        setArticles((prevAticles) => {
+        return [...prevAticles, ...data]
+      });
     } catch (e) {
       setError(true)
     } finally {
-         setLoading(false);
+      setIsLoading(false);
       
     }
-  };
-
+    }
+    getData()
+  }, [page, searchQuery]); 
+  
+  
   const handleSearch = async (newQuery) => {
-    getArticles(newQuery);
+    setSearchQuery(newQuery);
+    setPage(1)
+    setArticles([])
   };
 
-  useEffect(() => {
-    const defaultQuery = "";
-    getArticles(defaultQuery);
-  }, []); 
-
+  const handleLoadMore = () => {
+    setPage(page + 1)
+  }
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
-      {loading && <Audio />}
-      {error && <ErrorMessage message="OOps!....."/>}
+      {isLoading && <Loader loading={isLoading} />}
+      {error && <ErrorMessage message="OOps! Error! Reload" />}
       {articles.length > 0 && <ImageGallery items={articles} />}
+      {articles.length > 0 && <LoadMoreBtn onClick={handleLoadMore} />}
     </div>
   );
 }
