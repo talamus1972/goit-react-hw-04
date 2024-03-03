@@ -22,11 +22,7 @@ export default function App() {
     setUrl(url);
   };
 
-  // const closeModal = () => {
-  //   setModal(false);
-  // };
-
-  // ================================================================
+  // ====================================================================
 
   axios.defaults.baseURL = "https://api.unsplash.com/search/";
 
@@ -47,7 +43,6 @@ export default function App() {
           },
         });
         const data = response.data.results;
-        console.log(data);
         setArticles((prevAticles) => {
           return [...prevAticles, ...data];
         });
