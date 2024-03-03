@@ -5,7 +5,6 @@ import ImageGallery from "../ImageGallery/ImageGallery.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import Loader from "../Loader/Loader.jsx";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn.jsx";
-// import { Modal } from "react-responsive-modal";
 import ImageModal from "../ImageModal/ImageModal.jsx";
 
 export default function App() {
@@ -16,9 +15,11 @@ export default function App() {
   const [error, setError] = useState(false);
   // ====================================================================
   const [modal, setModal] = useState(false);
+  const [url, setUrl] = useState("");
 
-  const toggleModal = () => {
+  const toggleModal = (url) => {
     setModal(!modal);
+    setUrl(url);
   };
 
   // const closeModal = () => {
@@ -74,7 +75,7 @@ export default function App() {
       {error && <ErrorMessage />}
 
       {articles.length > 0 && (
-        <ImageGallery items={articles} onClick={() => toggleModal(true)} />
+        <ImageGallery items={articles} onClick={toggleModal} />
       )}
 
       {isLoading && <Loader loading={isLoading} />}
@@ -82,9 +83,7 @@ export default function App() {
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
 
-      {modal && (
-        <ImageModal isOpen={modal} onClose={() => toggleModal(false)} />
-      )}
+      {modal && <ImageModal isOpen={modal} url={url} onClose={toggleModal} />}
     </div>
   );
 }

@@ -5,11 +5,12 @@ export default function ImageGallery({ items, onClick }) {
   return (
     <ul className={css.list}>
       {items.map((item) => (
-        <li className={css.item} key={item.id} onClick={onClick}>
-          <ImageCard
-            item={item}
-            onClick={() => onClick(item.urls.regular, item.alt_description)}
-          />
+        <li
+          className={css.item}
+          key={item.id}
+          onClick={() => onClick(item.urls.regular, item.alt_description)}
+        >
+          <ImageCard item={item} />
         </li>
       ))}
     </ul>

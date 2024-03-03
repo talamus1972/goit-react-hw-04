@@ -1,19 +1,16 @@
 import Modal from "react-modal";
 import css from "./ImageModal.module.css";
 
-export default function ImageModal({ isOpen, onClose, imageURL, altText }) {
+export default function ImageModal({ isOpen, onClose, url }) {
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Example Modal"
     >
-      <div className={css.modal}>
-        <img src={imageURL} alt={altText} />
-        <button onClick={onClose}>close </button>
+      <div className={css.modal} onClick={onClose}>
+        <img src={url} />
       </div>
     </Modal>
   );
 }
-
-//  <img src={urls.regular} alt={alt_description} />;
